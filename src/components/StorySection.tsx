@@ -60,7 +60,7 @@ export default function StorySection({
         }}
       >
         <div
-          className="reveal-clip mb-4 text-[0.72rem] font-medium tracking-[0.35em] text-gold uppercase"
+          className="reveal-clip mb-4 text-[0.85rem] font-medium tracking-[0.35em] text-gold uppercase"
           style={{
             transition: "clip-path 0.8s 0.3s cubic-bezier(0.16,1,0.3,1)",
           }}

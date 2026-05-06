@@ -1,9 +1,33 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useReveal } from "./useReveal";
+
+const QUOTES = [
+  "Sterker dan je ex haar argumenten.",
+  "Waarschuwing: Kan leiden tot legendarische verhalen.",
+  "Mengverhouding: ja.",
+  "Cola voor de kleur.",
+  "Officieel festivalbrandstof.",
+  "Niet geschikt voor beginners.",
+  "Proef de zomer. Vergeet de rest.",
+  "60/40 bijna illegaal.",
+  "Drink nu. Denk later.",
+  "Powered by rum.",
+  "Dit is geen drankje. Dit is een keuze.",
+  "Sterk genoeg om je naam te vergeten.",
+];
 
 export default function Quote() {
   const ref = useReveal<HTMLElement>({ threshold: 0.25 });
+  const [quote, setQuote] = useState(
+    "Het enige drankje dat tegelijkertijd premium en volledig onverantwoord is."
+  );
+
+  useEffect(() => {
+    const randomQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+    setQuote(randomQuote);
+  }, []);
 
   return (
     <section
@@ -18,9 +42,7 @@ export default function Quote() {
             "opacity 1.2s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1)",
         }}
       >
-        &ldquo;Het enige drankje dat tegelijkertijd premium
-        <br />
-        en volledig onverantwoord is.&rdquo;
+        &ldquo;{quote}&rdquo;
         <span className="font-sans mt-10 block text-[0.8rem] font-normal tracking-[0.3em] text-[oklch(0.85_0.08_60)] not-italic uppercase">
           — Niemand minder dan onszelf, 2024
         </span>

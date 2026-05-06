@@ -5,7 +5,7 @@ export default function Footer() {
         BACOLAV
       </div>
       <div className="text-[0.7rem] tracking-[0.1em] text-mute-dim">
-        © 2024 Bacolav B.V. · Fictief merk · Drink met verstand · 18+
+        © {new Date().getFullYear()} Bacolav B.V. · Drink met verstand · 18+
       </div>
     </footer>
   );

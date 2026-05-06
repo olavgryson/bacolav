@@ -1,138 +1,174 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import BottleSvg from "./BottleSvg";
-import CrateSvg from "./CrateSvg";
+import { Suspense, useLayoutEffect, useRef, useState } from "react";
+import { Canvas } from "@react-three/fiber";
+import { Group } from "three";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import HeroScene3D from "./HeroScene3D";
 
-const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-const easeInOutCubic = (t: number) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-const clamp = (v: number, min: number, max: number) =>
-  Math.min(Math.max(v, min), max);
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ScrollyScene() {
   const playSpaceRef = useRef<HTMLDivElement>(null);
-  const bottleRef = useRef<HTMLDivElement>(null);
   const sceneBgRef = useRef<HTMLDivElement>(null);
   const txt1Ref = useRef<HTMLDivElement>(null);
   const txt2Ref = useRef<HTMLDivElement>(null);
   const txt3Ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    let ticking = false;
+  const bottleRef = useRef<Group>(null);
+  const crateRef = useRef<Group>(null);
+  const elevatorRef = useRef<Group>(null);
 
-    const update = () => {
-      const playSpace = playSpaceRef.current;
-      const bottle = bottleRef.current;
-      const sceneBg = sceneBgRef.current;
-      const t1 = txt1Ref.current;
-      const t2 = txt2Ref.current;
-      const t3 = txt3Ref.current;
-      if (!playSpace || !bottle || !sceneBg || !t1 || !t2 || !t3) return;
+  const [ready, setReady] = useState(false);
 
-      const rect = playSpace.getBoundingClientRect();
-      const rawProgress = clamp(
-        -rect.top / (rect.height - window.innerHeight),
-        0,
-        1
-      );
+  useLayoutEffect(() => {
+    if (!ready) return;
+    const playSpace = playSpaceRef.current;
+    const bottle = bottleRef.current;
+    const crate = crateRef.current;
+    const elevator = elevatorRef.current;
+    const sceneBg = sceneBgRef.current;
+    if (!playSpace || !bottle || !crate || !sceneBg || !elevator) return;
 
-      // Phase 1 (0→0.25) — bottle rises out of crate
-      const phase1 = clamp(rawProgress / 0.25, 0, 1);
-      const riseEased = easeOutCubic(phase1);
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-      // Phase 2 (0.25→0.55) — bottle scales up & centers
-      const phase2 = clamp((rawProgress - 0.25) / 0.3, 0, 1);
-      const scaleEased = easeInOutCubic(phase2);
+    if (reduceMotion) {
+      elevator.position.y = 0.4;
+      bottle.rotation.y = Math.PI * 2;
+      bottle.rotation.x = -Math.PI / 2;
+      crate.position.y = -0.4;
+      [txt1Ref, txt2Ref, txt3Ref].forEach((r) => {
+        if (r.current) r.current.style.opacity = "1";
+      });
+      return;
+    }
 
-      // Phase 3 (0.40→0.80) — 360° rotation
-      const phase3 = clamp((rawProgress - 0.4) / 0.4, 0, 1);
-      const rotationEased = easeInOutCubic(phase3);
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: playSpace,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.5,
+          markers: true,
+          onUpdate: (self) => {
+            const p = self.progress;
+            let chapter = "None";
+            if (p > 0 && p < 0.28) chapter = "I";
+            else if (p >= 0.28 && p < 0.55) chapter = "II";
+            else if (p >= 0.55) chapter = "III";
 
-      const translateY = lerp(100, -20, riseEased);
-      const scale = lerp(0.6, 1.35, scaleEased);
-      const rotation = lerp(0, 360, rotationEased);
+            console.log(
+              `Scroll Progress: ${p.toFixed(3)} | Chapter: ${chapter}`
+            );
+          },
+        },
+      });
 
-      bottle.style.opacity = String(clamp(phase1 * 3, 0, 1));
-      bottle.style.transform = `translateX(-50%) translateY(${translateY}%) scale(${scale}) rotateY(${rotation}deg)`;
+      tl.to(
+        elevator.position,
+        { y: "+=0.5", ease: "power2.out", duration: 1 },
+        0
+      )
+        .to(
+          bottle.position,
+          { x: 0, z: 0.2, ease: "power2.inOut", duration: 0.7 },
+          0.2
+        )
+        .to(bottle.rotation, { y: Math.PI * 2, duration: 1 }, 0)
+        .to(
+          crate.position,
+          { y: -0.9, ease: "power2.in", duration: 0.45 },
+          0.55
+        )
+        .fromTo(
+          sceneBg,
+          {
+            backgroundImage:
+              "radial-gradient(ellipse at center bottom, oklch(0.20 0.06 35) 0%, oklch(0.07 0.02 30) 70%)",
+          },
+          {
+            backgroundImage:
+              "radial-gradient(ellipse at center bottom, oklch(0.32 0.06 35) 0%, oklch(0.07 0.02 30) 70%)",
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.25
+        )
+        // Chapter I — visible 0 → 0.34
+        .fromTo(
+          txt1Ref.current,
+          { opacity: 0, x: -30 },
+          { opacity: 1, x: 0, duration: 0.08, ease: "power2.out" },
+          0
+        )
+        .to(
+          txt1Ref.current,
+          { opacity: 0, duration: 0.06 },
+          0.40
+        )
+        // Chapter II — visible 0.36 → 0.66
+        .fromTo(
+          txt2Ref.current,
+          { opacity: 0, x: 30 },
+          { opacity: 1, x: 0, duration: 0.08, ease: "power2.out" },
+          0.36
+        )
+        .to(
+          txt2Ref.current,
+          { opacity: 0, duration: 0.06 },
+          1
+        )
+        // Chapter III — visible 0.70 → 1.0
+        .fromTo(
+          txt3Ref.current,
+          { opacity: 0, x: -30 },
+          { opacity: 1, x: 0, duration: 0.08, ease: "power2.out" },
+          0.70
+        )
+        .to(
+          txt3Ref.current,
+          { opacity: 0, duration: 0.06 },
+          1
+        );
+    }, playSpace);
 
-      const glowIntensity = clamp(phase2, 0, 1);
-      sceneBg.style.background = `radial-gradient(ellipse at center bottom, oklch(${
-        0.2 + glowIntensity * 0.12
-      } 0.06 35) 0%, oklch(0.07 0.02 30) 70%)`;
-
-      // Text panels
-      const v1 =
-        clamp(rawProgress / 0.2, 0, 1) -
-        clamp((rawProgress - 0.28) / 0.06, 0, 1);
-      t1.style.opacity = String(clamp(v1, 0, 1));
-      t1.style.transform = `translateX(${lerp(
-        -30,
-        0,
-        easeOutCubic(clamp(rawProgress / 0.2, 0, 1))
-      )}px)`;
-
-      const t2in = clamp((rawProgress - 0.2) / 0.12, 0, 1);
-      const t2out = clamp((rawProgress - 0.52) / 0.08, 0, 1);
-      t2.style.opacity = String(clamp(t2in - t2out, 0, 1));
-      t2.style.transform = `translateX(${lerp(30, 0, easeOutCubic(t2in))}px)`;
-
-      const t3in = clamp((rawProgress - 0.55) / 0.15, 0, 1);
-      const t3out = clamp((rawProgress - 0.88) / 0.08, 0, 1);
-      t3.style.opacity = String(clamp(t3in - t3out, 0, 1));
-      t3.style.transform = `translateX(${lerp(-30, 0, easeOutCubic(t3in))}px)`;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          update();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    return () => ctx.revert();
+  }, [ready]);
 
   return (
     <div className="relative">
-      {/* Sticky scene */}
+      {/* Sticky 3D stage */}
       <div
         id="sticky-scene"
-        className="pointer-events-none sticky top-0 z-10 flex h-screen w-full items-center justify-center overflow-hidden"
+        className="pointer-events-none sticky top-0 z-10 h-screen w-full overflow-hidden"
       >
         <div ref={sceneBgRef} className="scene-bg-default absolute inset-0" />
-
-        <div
-          className="relative flex h-[340px] w-[340px] items-end justify-center"
-          style={{ perspective: "800px" }}
+        <Canvas
+          className="!absolute inset-0"
+          dpr={[1, 2]}
+          gl={{ antialias: true, powerPreference: "high-performance" }}
         >
-          <div
-            ref={bottleRef}
-            className="absolute bottom-[56%] left-1/2 z-5 w-[90px] opacity-0 will-change-transform"
-            style={{
-              transform: "translateX(-50%) translateY(100%) scale(0.6)",
-              transformOrigin: "bottom center",
-              perspective: "800px",
-            }}
-          >
-            <BottleSvg />
-          </div>
+          <Suspense fallback={null}>
+            <HeroScene3D
+              bottleRef={bottleRef}
+              crateRef={crateRef}
+              elevatorRef={elevatorRef}
+              onReady={() => setReady(true)}
+            />
+          </Suspense>
+        </Canvas>
 
-          <CrateSvg />
-        </div>
-      </div>
-
-      {/* Scroll-driven play space */}
-      <div ref={playSpaceRef} className="relative h-[400vh]">
+        {/* Chapter overlays — pinned to sticky stage so they stay visible
+            for the full scroll-trigger window; GSAP controls fade timing. */}
         <div
           ref={txt1Ref}
-          className="pointer-events-none absolute top-[20vh] left-[5vw] z-20 opacity-0 transition-[opacity,transform] duration-[600ms,800ms] ease-[ease,cubic-bezier(0.16,1,0.3,1)]"
+          className="pointer-events-none absolute top-[20vh] left-[5vw] z-20 opacity-0"
+          style={{ willChange: "opacity, transform" }}
         >
           <div className="mb-4 text-[0.72rem] font-medium tracking-[0.35em] text-gold uppercase">
             Hoofdstuk I
@@ -148,7 +184,8 @@ export default function ScrollyScene() {
 
         <div
           ref={txt2Ref}
-          className="pointer-events-none absolute top-[15vh] right-[5vw] z-20 text-right opacity-0 transition-[opacity,transform] duration-[600ms,800ms] ease-[ease,cubic-bezier(0.16,1,0.3,1)]"
+          className="pointer-events-none absolute top-[15vh] right-[5vw] z-20 text-right opacity-0"
+          style={{ willChange: "opacity, transform" }}
         >
           <div className="mb-4 text-[0.72rem] font-medium tracking-[0.35em] text-gold uppercase">
             Hoofdstuk II
@@ -167,7 +204,8 @@ export default function ScrollyScene() {
 
         <div
           ref={txt3Ref}
-          className="pointer-events-none absolute bottom-[20vh] left-[5vw] z-20 opacity-0 transition-[opacity,transform] duration-[600ms,800ms] ease-[ease,cubic-bezier(0.16,1,0.3,1)]"
+          className="pointer-events-none absolute bottom-[20vh] left-[5vw] z-20 opacity-0"
+          style={{ willChange: "opacity, transform" }}
         >
           <div className="mb-4 text-[0.72rem] font-medium tracking-[0.35em] text-gold uppercase">
             Hoofdstuk III
@@ -184,6 +222,9 @@ export default function ScrollyScene() {
           </div>
         </div>
       </div>
+
+      {/* Scroll-driven play space — invisible, just provides scroll length. */}
+      <div ref={playSpaceRef} className="relative h-[400vh]" />
     </div>
   );
 }

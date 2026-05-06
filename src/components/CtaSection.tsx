@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useReveal } from "./useReveal";
+import PreOrderModal from "./PreOrderModal";
 
 export default function CtaSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const ref = useReveal<HTMLElement>({ threshold: 0.2 });
 
   const stagger = (i: number) =>
@@ -20,9 +23,7 @@ export default function CtaSection() {
       >
         DRINK
         <br />
-        <span className="text-outline">BACO</span>
-        <br />
-        LAV.
+        <span className="text-outline">BACO</span>LAV.
       </span>
       <div
         className="reveal-up my-12 text-[0.85rem] tracking-[0.3em] text-mute uppercase"
@@ -30,15 +31,17 @@ export default function CtaSection() {
       >
         Beschikbaar waar goede smaak en slechte beslissingen samenkomen
       </div>
-      <a
-        href="#"
-        className="reveal-up font-sans inline-block cursor-pointer border-[1.5px] border-cream px-16 py-5 text-[0.75rem] tracking-[0.3em] text-cream uppercase no-underline hover:bg-cream hover:text-darker"
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="reveal-up font-sans inline-block cursor-pointer border-[1.5px] border-cream bg-transparent px-16 py-5 text-[0.75rem] tracking-[0.3em] text-cream uppercase no-underline hover:bg-cream hover:text-darker"
         style={{
           transition: `${stagger(2)}, background 0.3s, color 0.3s`,
         }}
       >
-        Bestel een Krat
-      </a>
+        Pre-order een Krat
+      </button>
+
+      <PreOrderModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }

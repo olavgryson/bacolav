@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bacolav
 
-## Getting Started
+Premium scrollytelling landing page for the fictional rum-cola brand **Bacolav**.
 
-First, run the development server:
+Stack: Next.js 16 (App Router) · React 19 · TypeScript 5 · Tailwind v4.
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build
+npm run start
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project layout
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `src/app/` — App Router entry (`layout.tsx`, `page.tsx`, `globals.css`)
+- `src/components/` — page sections (Hero, ScrollyScene, Story, Ingredients, Stats, Quote, Logo, Cta, Footer) and SVG primitives (CrateSvg, BottleSvg)
+- `public/` — static assets, including `public/uploads/` for hero imagery
+- `CLAUDE.md` / `AGENTS.md` — agent instructions (symlinked)
+- `DESIGN.md` — visual/brand reference: palette, typography, section flow, motion, copy voice
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design
 
-## Learn More
+See [`DESIGN.md`](./DESIGN.md) for the full brand and motion spec before making UI changes. Brand tokens live in `src/app/globals.css` under `@theme` (Tailwind v4, no `tailwind.config`).
 
-To learn more about Next.js, take a look at the following resources:
+## Notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js 16 contains breaking changes vs. earlier versions — consult `node_modules/next/dist/docs/` before writing Next-specific code.

@@ -15,16 +15,20 @@ export default function LogoSection() {
     const sub = subRef.current;
     if (!section || !wrap || !sub) return;
 
+    const glow = wrap.querySelector<HTMLDivElement>("[data-logo-glow]");
+
     const obs = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           section.classList.add("is-revealed");
-          wrap.style.filter = "drop-shadow(0 0 80px rgba(204,20,20,0.5))";
+          if (glow) glow.style.opacity = "1";
           sub.style.opacity = "1";
           setTimeout(() => {
-            wrap.style.transition = "filter 2s ease-in-out";
-            wrap.style.filter = "drop-shadow(0 0 30px rgba(204,20,20,0.25))";
+            if (glow) {
+              glow.style.transition = "opacity 2s ease-in-out";
+              glow.style.opacity = "0.55";
+            }
             wrap.classList.add("animate-logo-float");
           }, 1400);
           obs.unobserve(section);
@@ -56,18 +60,29 @@ export default function LogoSection() {
       <div className="relative z-5 text-center">
         <div
           ref={imgWrapRef}
-          className="reveal-logo inline-block"
+          className="reveal-logo relative inline-block"
           style={{
-            filter: "drop-shadow(0 0 60px rgba(204,20,20,0.3))",
             transition:
-              "opacity 1.4s cubic-bezier(0.16,1,0.3,1), transform 1.4s cubic-bezier(0.16,1,0.3,1), filter 1.4s ease",
+              "opacity 1.4s cubic-bezier(0.16,1,0.3,1), transform 1.4s cubic-bezier(0.16,1,0.3,1)",
           }}
         >
+          <div
+            data-logo-glow
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 opacity-0"
+            style={{
+              background:
+                "radial-gradient(closest-side, rgba(204,20,20,0.45), rgba(204,20,20,0) 70%)",
+              transform: "scale(1.25)",
+              transition: "opacity 1.4s ease",
+            }}
+          />
           <Image
-            src="/uploads/bacolav-logo.png"
+            src="/uploads/bacolav-logo.webp"
             alt="Bacolav Logo"
-            width={1200}
-            height={1200}
+            width={1536}
+            height={1024}
+            sizes="(max-width: 768px) 80vw, 600px"
             className="h-auto max-w-[min(600px,80vw)]"
           />
         </div>

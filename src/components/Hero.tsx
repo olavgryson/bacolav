@@ -35,7 +35,7 @@ export default function Hero() {
     >
       <div
         ref={bgRef}
-        className="absolute inset-0 scale-[1.06] bg-[url('/uploads/hero-bg.png')] bg-cover bg-[center_30%] will-change-transform"
+        className="absolute inset-0 scale-[1.06] bg-[url('/uploads/hero-bg.webp')] bg-cover bg-[center_30%] will-change-transform"
       />
       <div className="hero-overlay absolute inset-0" />
       <div className="hero-grade absolute inset-0" />

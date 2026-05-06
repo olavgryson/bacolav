@@ -8,7 +8,7 @@ export default function Nav() {
         {[
           ["Verhaal", "#story"],
           ["Ingrediënten", "#ingredients"],
-          ["Bestel", "#cta"],
+          ["Pre-order", "#cta"],
         ].map(([label, href]) => (
           <li key={href}>
             <a
