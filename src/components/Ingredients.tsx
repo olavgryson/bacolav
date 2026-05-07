@@ -32,32 +32,23 @@ export default function Ingredients() {
       className="relative z-30 flex min-h-screen flex-col items-center justify-center bg-ingredients-bg px-[6vw] py-[10vh] text-center"
     >
       <div
-        className="reveal-up-sm mb-2 text-[0.72rem] font-medium tracking-[0.35em] text-gold uppercase"
-        style={{
-          transition:
-            "opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)",
-        }}
+        className="reveal-up-sm reveal-base mb-2 text-[0.72rem] font-medium tracking-[0.35em] text-gold uppercase"
       >
         De Heilige Drie
       </div>
       <div
-        className="reveal-up-sm font-display mb-16 text-[clamp(2.5rem,6vw,6rem)] font-black text-cream italic"
-        style={{
-          transition:
-            "opacity 0.9s 0.1s cubic-bezier(0.16,1,0.3,1), transform 0.9s 0.1s cubic-bezier(0.16,1,0.3,1)",
-        }}
+        className="reveal-up-sm reveal-base delay-100 font-display mb-16 text-[clamp(2.5rem,6vw,6rem)] font-black text-cream italic"
       >
         Wat zit erin?
       </div>
-
+ 
       <div className="grid w-full max-w-[900px] grid-cols-1 gap-[2px] sm:grid-cols-3">
         {CARDS.map((c, i) => (
           <div
             key={c.code}
-            className="ingredient-card reveal-up-lg flex cursor-default flex-col items-center gap-4 border border-line-strong bg-card px-8 py-12"
-            style={{
-              transition: `opacity 0.9s ${0.25 + i * 0.12}s cubic-bezier(0.16,1,0.3,1), transform 0.9s ${0.25 + i * 0.12}s cubic-bezier(0.16,1,0.3,1), background 0.4s, border-color 0.4s, box-shadow 0.5s ease`,
-            }}
+            className={`ingredient-card reveal-up-lg reveal-base flex cursor-default flex-col items-center gap-4 border border-line-strong bg-card px-8 py-12 ${
+              i === 0 ? "delay-250" : i === 1 ? "delay-370" : "delay-490"
+            }`}
           >
             <div className="font-bebas text-[1.5rem] leading-none tracking-[0.05em] text-gold">
               {c.code}

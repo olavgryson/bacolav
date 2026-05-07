@@ -44,7 +44,7 @@ export default function Quote() {
       >
         &ldquo;{quote}&rdquo;
         <span className="font-sans mt-10 block text-[0.8rem] font-normal tracking-[0.3em] text-[oklch(0.85_0.08_60)] not-italic uppercase">
-          — Niemand minder dan onszelf, 2024
+          — Bacolav
         </span>
       </div>
     </section>

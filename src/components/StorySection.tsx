@@ -51,19 +51,12 @@ export default function StorySection({
       {bgWord}
 
       <div
-        className={`transition-reveal ${
+        className={`reveal-base ${
           rightAlign ? "reveal-from-right" : "reveal-from-left"
         }`}
-        style={{
-          transition:
-            "opacity 1.1s cubic-bezier(0.16,1,0.3,1), transform 1.1s cubic-bezier(0.16,1,0.3,1)",
-        }}
       >
         <div
-          className="reveal-clip mb-4 text-[0.85rem] font-medium tracking-[0.35em] text-gold uppercase"
-          style={{
-            transition: "clip-path 0.8s 0.3s cubic-bezier(0.16,1,0.3,1)",
-          }}
+          className="reveal-clip reveal-base delay-300 mb-4 text-[0.85rem] font-medium tracking-[0.35em] text-gold uppercase"
         >
           {eyebrow}
         </div>
@@ -71,8 +64,7 @@ export default function StorySection({
           {headline}
         </div>
         <div
-          className="reveal-divider my-6 h-[2px] w-10 bg-red"
-          style={{ transition: "transform 0.9s 0.5s cubic-bezier(0.16,1,0.3,1)" }}
+          className="reveal-divider reveal-base delay-500 my-6 h-[2px] w-10 bg-red"
         />
         <p className="mt-6 max-w-[38ch] text-[clamp(1rem,1.5vw,1.2rem)] leading-[1.65] font-light text-[oklch(0.75_0.03_60)]">
           {body}
@@ -81,13 +73,9 @@ export default function StorySection({
       </div>
 
       <div
-        className={`flex items-center justify-center p-16 transition-reveal ${
+        className={`reveal-base delay-150 flex items-center justify-center p-16 ${
           rightAlign ? "reveal-from-left" : "reveal-from-right"
         }`}
-        style={{
-          transition:
-            "opacity 1.1s 0.15s cubic-bezier(0.16,1,0.3,1), transform 1.1s 0.15s cubic-bezier(0.16,1,0.3,1)",
-        }}
       >
         {image}
       </div>

@@ -25,9 +25,30 @@ const bebas = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bacolav.be"), // Verander dit naar je uiteindelijke domein
   title: "BACOLAV — Gasolina in a Bottle",
   description:
     "Bacolav — premium fictief Bacardi-cola merk. 60% rum. 100% fun. 0% apologies.",
+  openGraph: {
+    title: "BACOLAV — Gasolina in a Bottle",
+    description: "60% rum. 100% fun. 0% apologies. Ontdek het geheim van Bacolav.",
+    images: [
+      {
+        url: "/uploads/hero-bg.webp",
+        width: 1200,
+        height: 630,
+        alt: "Bacolav",
+      },
+    ],
+    locale: "nl_NL",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BACOLAV — Gasolina in a Bottle",
+    description: "60% rum. 100% fun. 0% apologies.",
+    images: ["/uploads/hero-bg.webp"],
+  },
 };
 
 export default function RootLayout({

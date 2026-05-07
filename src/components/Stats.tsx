@@ -73,10 +73,9 @@ export default function Stats() {
         {STATS.map((s, i) => (
           <div
             key={s.label}
-            className="reveal-up-sm border-b border-line-strong px-12 py-16 text-center last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0"
-            style={{
-              transition: `opacity 0.8s ${i * 0.15}s cubic-bezier(0.16,1,0.3,1), transform 0.8s ${i * 0.15}s cubic-bezier(0.16,1,0.3,1)`,
-            }}
+            className={`reveal-up-sm reveal-base border-b border-line-strong px-12 py-16 text-center last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0 ${
+              i === 0 ? "delay-0" : i === 1 ? "delay-150" : "delay-300"
+            }`}
           >
             <span
               className="stat-number font-bebas block text-[clamp(3rem,6vw,6rem)] leading-none text-red"

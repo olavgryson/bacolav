@@ -54,18 +54,18 @@ export default function ScrollyScene() {
           start: "top top",
           end: "bottom bottom",
           scrub: 0.5,
-          markers: true,
-          onUpdate: (self) => {
-            const p = self.progress;
-            let chapter = "None";
-            if (p > 0 && p < 0.28) chapter = "I";
-            else if (p >= 0.28 && p < 0.55) chapter = "II";
-            else if (p >= 0.55) chapter = "III";
-
-            console.log(
-              `Scroll Progress: ${p.toFixed(3)} | Chapter: ${chapter}`
-            );
-          },
+          // markers: true,
+          // onUpdate: (self) => {
+          //   const p = self.progress;
+          //   let chapter = "None";
+          //   if (p > 0 && p < 0.28) chapter = "I";
+          //   else if (p >= 0.28 && p < 0.55) chapter = "II";
+          //   else if (p >= 0.55) chapter = "III";
+          //
+          //   console.log(
+          //     `Scroll Progress: ${p.toFixed(3)} | Chapter: ${chapter}`
+          //   );
+          // },
         },
       });
 
@@ -148,20 +148,29 @@ export default function ScrollyScene() {
         className="pointer-events-none sticky top-0 z-10 h-screen w-full overflow-hidden"
       >
         <div ref={sceneBgRef} className="scene-bg-default absolute inset-0" />
-        <Canvas
-          className="!absolute inset-0"
-          dpr={[1, 2]}
-          gl={{ antialias: true, powerPreference: "high-performance" }}
-        >
-          <Suspense fallback={null}>
+        <Suspense fallback={
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-darker/50 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-4">
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-red border-t-transparent" />
+              <span className="font-bebas text-sm tracking-[0.2em] text-gold uppercase">
+                Bacolav is onderweg...
+              </span>
+            </div>
+          </div>
+        }>
+          <Canvas
+            className="!absolute inset-0"
+            dpr={[1, 2]}
+            gl={{ antialias: true, powerPreference: "high-performance" }}
+          >
             <HeroScene3D
               bottleRef={bottleRef}
               crateRef={crateRef}
               elevatorRef={elevatorRef}
               onReady={() => setReady(true)}
             />
-          </Suspense>
-        </Canvas>
+          </Canvas>
+        </Suspense>
 
         {/* Chapter overlays — pinned to sticky stage so they stay visible
             for the full scroll-trigger window; GSAP controls fade timing. */}

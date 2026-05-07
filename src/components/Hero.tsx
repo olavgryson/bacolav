@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-
+import Image from "next/image";
+ 
 export default function Hero() {
   const bgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-
+ 
   useEffect(() => {
     // Hero text entrance
     const t = setTimeout(() => {
       textRef.current?.classList.add("is-revealed");
     }, 300);
-
+ 
     // Parallax on the bg image
     const onScroll = () => {
       const bg = bgRef.current;
@@ -27,26 +28,28 @@ export default function Hero() {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
-
+ 
   return (
     <section
       id="hero"
       className="relative flex h-screen items-end justify-start overflow-hidden px-[6vw] pb-[8vh]"
     >
-      <div
-        ref={bgRef}
-        className="absolute inset-0 scale-[1.06] bg-[url('/uploads/hero-bg.webp')] bg-cover bg-[center_30%] will-change-transform"
-      />
-      <div className="hero-overlay absolute inset-0" />
-      <div className="hero-grade absolute inset-0" />
+      <div ref={bgRef} className="absolute inset-0 scale-[1.06] will-change-transform">
+        <Image
+          src="/uploads/hero-bg.webp"
+          alt="Bacolav Lifestyle"
+          fill
+          priority
+          className="object-cover object-[center_30%]"
+          sizes="100vw"
+        />
+      </div>
+      <div className="hero-overlay absolute inset-0 z-10" />
+      <div className="hero-grade absolute inset-0 z-10" />
 
       <div
         ref={textRef}
-        className="reveal-up transition-reveal relative z-30 max-w-[55vw]"
-        style={{
-          transition:
-            "opacity 1.2s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1)",
-        }}
+        className="reveal-up reveal-base-slow relative z-30 max-w-[55vw]"
       >
         <span className="font-bebas block text-[clamp(5rem,16vw,18rem)] leading-[0.85] tracking-[0.02em] text-cream">
           BACO<span className="text-red">LAV</span>

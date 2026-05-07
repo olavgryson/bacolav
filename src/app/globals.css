@@ -21,10 +21,8 @@
   --font-display: var(--font-playfair);
   --font-bebas: var(--font-bebas);
 
-  /* Animations */
-  --animate-scroll-pulse: scrollPulse 2s ease-in-out infinite;
-  --animate-logo-float: logoFloat 5s ease-in-out infinite;
-  --animate-stat-glow: statGlow 3s ease-in-out infinite;
+  /* Easing */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
 
   @keyframes scrollPulse {
     0%, 100% { transform: scaleY(1); opacity: 0.5; }
@@ -40,6 +38,14 @@
     0%, 100% { text-shadow: 0 0 20px rgba(204,20,20,0.3); }
     50%      { text-shadow: 0 0 50px rgba(204,20,20,0.6), 0 0 80px rgba(204,20,20,0.2); }
   }
+}
+
+@utility reveal-base {
+  @apply transition-all duration-1100 ease-reveal;
+}
+
+@utility reveal-base-slow {
+  @apply transition-all duration-1400 ease-reveal;
 }
 
 html { scroll-behavior: auto; }

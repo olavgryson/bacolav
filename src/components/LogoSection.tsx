@@ -60,21 +60,16 @@ export default function LogoSection() {
       <div className="relative z-5 text-center">
         <div
           ref={imgWrapRef}
-          className="reveal-logo relative inline-block"
-          style={{
-            transition:
-              "opacity 1.4s cubic-bezier(0.16,1,0.3,1), transform 1.4s cubic-bezier(0.16,1,0.3,1)",
-          }}
+          className="reveal-logo reveal-base-slow relative inline-block"
         >
           <div
             data-logo-glow
             aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 opacity-0"
+            className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-1400 ease-linear"
             style={{
               background:
                 "radial-gradient(closest-side, rgba(204,20,20,0.45), rgba(204,20,20,0) 70%)",
               transform: "scale(1.25)",
-              transition: "opacity 1.4s ease",
             }}
           />
           <Image
@@ -88,8 +83,7 @@ export default function LogoSection() {
         </div>
         <div
           ref={subRef}
-          className="mt-12 text-[0.75rem] tracking-[0.4em] text-mute-dim uppercase opacity-0"
-          style={{ transition: "opacity 1s 0.5s ease" }}
+          className="mt-12 text-[0.75rem] tracking-[0.4em] text-mute-dim uppercase opacity-0 transition-opacity duration-1000 ease-linear delay-500"
         >
           Strong &amp; Smooth · Gasolina in a Bottle
         </div>
