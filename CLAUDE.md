@@ -20,3 +20,12 @@ Marketing site. Stack: Next.js 16 (App Router) + React 19 + TS 5 + Tailwind v4.
 ## Scripts
 
 `npm run dev` · `npm run build` · `npm run start` · `npm run lint`
+
+## Brain Vault — single source of truth
+
+Persoonlijk project (buiten Gryve/VOF-scope). Projectkennis leeft **uitsluitend** in de privé Obsidian-vault, niet in dit repo.
+
+- Toegang via de `obsidian` MCP-server, niet via losse file-reads. Vereist draaiende Obsidian (REST 127.0.0.1:27124).
+- Project-notes: `~/brain/personal/projects/bacolav/` — start bij `Bacolav.md`.
+
+**Regel:** schrijf nooit een kennis-`.md` in dit repo. Nieuwe kennis → vault.
