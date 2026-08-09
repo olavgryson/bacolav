@@ -1,0 +1,14 @@
+My idea:
+
+i have made a video 
+when you open the website you will see the video that i made (POV_opening_door.mp4). with the text
+
+"Kzie dat je dust et. Komt ein drinken!"
+
+then it would be funny that the user could choise a background song. I would like to have a vintage old vinyl player where you can choise between a few records.
+the different vinyl plates (5 songs) will be scrolled through like a carousel. zie @prompt_carousel
+the text that would be added to this section would be:
+
+"kiest een plate vo tijdens u rondleidinge"
+
+then we can start to show the website that we have now.

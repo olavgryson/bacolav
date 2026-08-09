@@ -1,3 +1,4 @@
+import Intro from "@/components/Intro";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import ScrollyScene from "@/components/ScrollySceneClient";
@@ -15,6 +16,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
+      <Intro />
       <Nav />
       <Hero />
       <ScrollyScene />

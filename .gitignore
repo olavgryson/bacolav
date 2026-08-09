@@ -20,6 +20,8 @@
 # production
 /build
 
+/inspiratie
+
 # misc
 .DS_Store
 *.pem
